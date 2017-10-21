@@ -1,10 +1,10 @@
 #lang racket
 
 (define-struct de
-  (np xMin xMax n cr f))
+  (np xMin xMax n cr f endSimul nRepeat))
 
 (define *de*
-  (make-de 100 -1 2 10 0.9 0.6))
+  (make-de 100 -1 2 10 0.9 0.6 200 200))
 
 (define rosenbrock
   (lambda(xs)
@@ -25,6 +25,37 @@
         (cons c (fitness-eval c de))
         ))
     ))
+
+(define (find-min de)
+  (let ( (popSize       (de-np de))
+         (maxInteracoes (de-endSimul de))
+         (maxRepetido   (de-nRepeat de)) )
+    (let* ( (popInicial    (populacao-inicial de)) )
+      (let loop ( (pop0   popInicial)
+                  (best   '())
+                  (repeatBest  0)
+                  (repeat      1) )
+        (let ( (newPop (operacoesGeneticas pop0 de))  )
+          (let* ( (pop1 (populacao-elite newPop popSize))
+                  (bestPop (first (populacao-elite pop1 1))) )
+            (if (or (= repeat maxInteracoes) (= repeatBest maxRepetido))
+                (begin
+                  best)
+                (loop pop1
+                      bestPop
+                      (if (equal? best bestPop) (add1 repeatBest) 0)
+                      (add1 repeat) ))
+            )
+          )
+        ))
+    ))
+
+(define (best-interacao interacao)
+  (cdr (car (sort interacao #:key cdr <))))
+
+(define (populacao-elite pop n)
+  (let ( (popOrdem (sort pop #:key cdr <)) )
+    (take popOrdem n)) )
 
 (define (desnormalize xs de)
   (let ( (xMin (de-xMin de))
@@ -57,16 +88,20 @@
       )
     ))
 
-(define (operadocoesGeneticas popTotal de)
+(define (operacoesGeneticas popTotal de)
   (let ( (targetAtual (targets popTotal)) )
     (let loop ( (newPop '()) )
       (let* ( (xiG (targetAtual))
               (popSemTarget (remove xiG popTotal)) )
         (if xiG
-            (let ( (viG (mutacao-diferencial xiG popSemTarget de)) )
+            (let ( (viG (mutacao-diferencial xiG popSemTarget de))
+                   (xiGFitness (cdr xiG)) )
               (let* ( (uiG (crossover viG (car xiG) de))
                       (uiGFitness (fitness-eval uiG de)) )
-                (loop (cons (cons uiG uiGFitness) newPop))
+                (if (< xiGFitness uiGFitness)
+                    (loop (cons xiG newPop))
+                    (loop (cons (cons uiG uiGFitness) newPop))
+                    )
                 )
               )
             newPop)
