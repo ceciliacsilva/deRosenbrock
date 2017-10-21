@@ -1,5 +1,7 @@
 #lang racket
 
+(provide (all-defined-out))
+
 (define-struct de
   (np xMin xMax n cr f endSimul nRepeat))
 
