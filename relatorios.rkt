@@ -86,8 +86,8 @@ table#t01 th {
         (let ( (individuo-real (desnormalize (car individuo) de)) )
           (displayln "<tr>" p)
           (for ( (xi (in-list individuo-real)) ) 
-            (displayln (~a "<td>" xi "</td>") p))
-          (displayln (~a "<td>" (cdr individuo) "</td>") p)
+            (displayln (~a "<td>" (~r xi #:precision 10) "</td>") p))
+          (displayln (~a "<td>" (~r (cdr individuo) #:precision 10)"</td>") p)
           (displayln "</tr>" p) ) )
       
       (displayln "</table><br></br><hr><hr><br></br>" p)
