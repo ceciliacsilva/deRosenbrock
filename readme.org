@@ -1,0 +1,37 @@
+#+TITLE: Trabalho 10
+#+AUTHOR: Cecília Carneiro e Silva
+#+DATE: 25/10/2017
+#+OPTIONS: toc:nil
+#+LATEX_HEADER: \usepackage[margin=3cm]{geometry}  
+
+* Trabalho 10 - Evolução diferencial
+
+  O objetivo desse trabalho é, usando evolução diferencial, minimizar a função de rosenbrock.
+
+- Rosenbrock: f(x) = \sum[100 * (xi+i - xi²)² + (xi - 1)²]
+
+- Repositório do trabalho: https://github.com/ceciliacsilva/deRosenbrock/
+
+** Configuração - DE
+
+- np: tamanho da população;
+- cr: taxa de cruzamento;
+- f: constante (mutação);
+- xMin: x mínimo;
+- xMax: x máximo;
+- n: quantidade de 'x' no cromossomo;
+- endSimul: quantidade de gerações;
+- nRepeat: quantidade de vezes que caso o melhor individuo repita o algoritmo termina.
+
+** Exemplos
+
+[[file:img/rosenbrock2.png]]
+
+Disponível em: https://codepen.io/ceciliacsilva/pen/JrQbyM
+
+[[file:img/rosenbrock3.png]]
+
+Disponível em: https://codepen.io/ceciliacsilva/pen/QqXGqb
+
+
+
